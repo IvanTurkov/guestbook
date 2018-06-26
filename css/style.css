@@ -99,3 +99,6 @@ input:focus,textarea:focus{
     margin-bottom: 20px;
     width: 100%;
 }
+#message_block{
+    display: none;
+}
