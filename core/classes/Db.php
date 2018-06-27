@@ -9,7 +9,7 @@ class Db
 
     protected $db;
 
-    protected function getDb(){
+    public function getDb(){
         $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8";
         return $this->db = new PDO($dsn, $this->user, $this->password);
     }
@@ -45,7 +45,11 @@ class Db
     }
     public function getComments(){
         $db = $this->getDb();
-        $query = 'SELECT * FROM reviews';
+
+        $offset = $_GET['offset'] != null ? $_GET['offset'].',' : '';
+        $offset = $this->clearString($offset);
+
+        $query = "SELECT * FROM reviews ORDER BY date DESC LIMIT $offset 4";
         $comments = $db->query($query)->fetchAll();
         return $comments;
     }

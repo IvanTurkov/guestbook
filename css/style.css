@@ -38,6 +38,7 @@ input:focus,textarea:focus{
 .form_wrapper{
     padding: 40px;
     background: #419a7b;
+    position: relative;
 }
 .inputs_wrapper{
     display: flex;
@@ -101,4 +102,40 @@ input:focus,textarea:focus{
 }
 #message_block{
     display: none;
+    font:16px Montserrat-Regular;
+    color: #3e3e3e;
+    text-align: center;
+    width: 300px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    background: #dedede;
+    padding: 40px 10px;
+    top: 50%;
+    z-index: 2;
+    margin-top: -59px;
+}
+.comments_block{
+    padding: 40px 0 40px;
+}
+.comments_block>table{
+    width: 100%;
+    border-collapse: collapse;
+}
+.comments_block>table th{
+    background: #dedede;
+    border: 1px solid #1e1e1e;
+    padding: 20px 0;
+    font: 14px Montserrat-SemiBold;
+    color: #3e3e3e;
+}
+.comments_block>table tr{
+    text-align: center;
+}
+.comments_block>table td{
+    padding: 20px 0;
+    border: 1px solid #1e1e1e;
+    font: 14px Montserrat-Regular;
+    color: #3e3e3e;
 }

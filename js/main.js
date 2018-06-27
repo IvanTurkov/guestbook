@@ -2,7 +2,7 @@ function showMessage(message) {
     var messBlock = $('#message_block');
     messBlock.html(message);
     messBlock.show();
-    setInterval(function () {
+    setTimeout(function () {
         messBlock.hide();
     },2000);
 }
