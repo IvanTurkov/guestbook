@@ -10,6 +10,16 @@ function reloadList() {
         }
     });
 }
+
+function reloadCaptcha() {
+    $.ajax({
+        url:'../core/inc/_captcha.php',
+        success:function () {
+            $('#captcha_img').attr('src','core/inc/_captcha.php');
+        }
+    });
+}
+
 function showMessage(message) {
     var messBlock = $('#message_block');
     messBlock.html(message);
@@ -32,6 +42,7 @@ $('#reviewsForm').on('submit',function () {
             clearInputs();
             showMessage(data);
             reloadList();
+            reloadCaptcha();
        }
    });
     return false;

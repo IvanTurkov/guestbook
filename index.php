@@ -19,7 +19,7 @@
                 <input type="text" name="tags" placeholder="Добавить тэги" class="site_input tags_input clearInput">
                 <div class="form_bottom_side">
                     <div class="captcha_wrapper">
-                        <img src="images.png" alt="captcha">
+                        <img src="core/inc/_captcha.php" alt="captcha" id="captcha_img">
                         <input type="text" name="captcha" placeholder="* Введите символы с картинки" class="site_input captcha_input clearInput">
                     </div>
                     <input type="submit" value="Отправить" class="site_submit site_input">

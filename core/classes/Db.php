@@ -19,12 +19,12 @@ class Db
 
     public function saveComment(){
         $db = $this->getDb();
-
         $user_name = $this->clearString($_POST['user_name']);
         $email = $this->clearString($_POST['email']);
         $homepage = $this->clearString($_POST['homepage']);
         $text = $this->clearString($_POST['text']);
         $tags = $this->clearString($_POST['tags']);
+        $captcha = strtolower($this->clearString($_POST['captcha']));
         $ip = $_SERVER['REMOTE_ADDR'];
         $browser = $_SERVER['HTTP_USER_AGENT'];
 
@@ -37,11 +37,13 @@ class Db
             ':review_tags' => $tags,
             ':review_text' => $text
         ];
-
-        $db->prepare("INSERT INTO 
+        session_start();
+        if($_SESSION['captcha'] == $captcha){
+            $db->prepare("INSERT INTO 
                               reviews (user_name,user_email,user_homepage,user_ip,user_browser,review_tags,review_text)
                               VALUES(:user_name,:user_email,:user_homepage,:user_ip,:user_browser,:review_tags,:review_text)")
-        ->execute($params);
+                ->execute($params);
+        }
     }
     public function getComments($offset = null){
         $db = $this->getDb();
