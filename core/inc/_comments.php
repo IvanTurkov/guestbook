@@ -1,5 +1,5 @@
 <?
-require_once 'core/classes/Db.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/core/classes/Db.php';
 
 $db = new Db();
 $comments = $db->getComments();

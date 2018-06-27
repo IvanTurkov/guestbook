@@ -1,3 +1,18 @@
+var offset = 4;
+var tableBody = $('.comments_block tbody');
+
+function reloadList() {
+    $.ajax({
+        url:'../core/inc/_comments.php',
+        success: function (data) {
+            tableBody.html(data);
+            offset = 4;
+            if(tableBody.children('#end_message').length !== 0){
+                tableBody.removeChild('#end_message');
+            }
+        }
+    });
+}
 function showMessage(message) {
     var messBlock = $('#message_block');
     messBlock.html(message);
@@ -19,6 +34,7 @@ $('#reviewsForm').on('submit',function () {
        success: function (data) {
             clearInputs();
             showMessage(data);
+            reloadList();
        }
    });
     return false;
@@ -31,9 +47,6 @@ function checkEndPage(){
 
     return (dh - (wh + sh) === 0) ? true : false;
 }
-
-var offset = 4;
-var tableBody = $('.comments_block tbody');
 
 $(window).on('scroll',function () {
     if(checkEndPage()) {

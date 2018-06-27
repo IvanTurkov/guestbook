@@ -1,5 +1,5 @@
 <?
-include_once 'classes/Db.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/core/classes/Db.php';
 $db = new Db();
 $offset = $_GET['offset'];
 $comments = $db->getComments($offset);
