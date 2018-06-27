@@ -7,9 +7,6 @@ function reloadList() {
         success: function (data) {
             tableBody.html(data);
             offset = 4;
-            if(tableBody.children('#end_message').length !== 0){
-                tableBody.removeChild('#end_message');
-            }
         }
     });
 }
