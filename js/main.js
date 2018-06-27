@@ -23,3 +23,30 @@ $('#reviewsForm').on('submit',function () {
    });
     return false;
 });
+
+function checkEndPage(){
+    var wh = $(window).height();
+    var dh = $(document).height();
+    var sh = $(document).scrollTop();
+
+    return (dh - (wh + sh) === 0) ? true : false;
+}
+
+var offset = 4;
+var tableBody = $('.comments_block tbody');
+
+$(window).on('scroll',function () {
+    if(checkEndPage()) {
+        $.ajax({
+            data: {offset:offset},
+            method:'GET',
+            url:'../core/loadAjax.php',
+            dataType:'html',
+            success: function (data) {
+                if(tableBody.children('#end_message').length === 0)
+                    tableBody.append(data);
+                    offset += 4;
+                }
+        });
+   }
+});

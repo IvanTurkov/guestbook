@@ -43,10 +43,10 @@ class Db
                               VALUES(:user_name,:user_email,:user_homepage,:user_ip,:user_browser,:review_tags,:review_text)")
         ->execute($params);
     }
-    public function getComments(){
+    public function getComments($offset = null){
         $db = $this->getDb();
 
-        $offset = $_GET['offset'] != null ? $_GET['offset'].',' : '';
+        $offset = $offset != null ? $offset.',' : '';
         $offset = $this->clearString($offset);
 
         $query = "SELECT * FROM reviews ORDER BY date DESC LIMIT $offset 4";
