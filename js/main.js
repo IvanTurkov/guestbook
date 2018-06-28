@@ -46,8 +46,8 @@ function removeErrors() {
 
 $('.site_input').focus(removeErrors);
 
-function clearInputs() {
-    $('.clearInput').val('');
+function clearInputs(inputClass) {
+    $(inputClass).val('');
 }
 
 $('#reviewsForm').on('submit',function () {
@@ -60,8 +60,9 @@ $('#reviewsForm').on('submit',function () {
         success: function (data) {
             if(data.errors !== undefined){
                 showErrors(data.errors);
+                clearInputs('.captcha_input');
             }else{
-                clearInputs();
+                clearInputs('.clearInput');
                 showMessage(data);
                 reloadList();
             }

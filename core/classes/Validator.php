@@ -1,9 +1,9 @@
 <?php
 
-
+session_start();
 class Validator
 {
-    protected static $errors;
+    protected static $errors = [];
 
     protected static function generateCaptchaChars(){
         $arrChars = array_merge(range('A','Z'),range('a','z'),range('0','9'));
@@ -17,7 +17,6 @@ class Validator
 
     public  static function drawCaptcha(){
         $chars = self::generateCaptchaChars();
-        session_start();
         $_SESSION['captcha'] = strtolower($chars);
 
         $image = imagecreate(240 , 80);
@@ -32,16 +31,27 @@ class Validator
         imagedestroy($image);
     }
 
-    public  static function validate(){
+    protected  static function checkField($pattern,$string,$message,$field){
+        if (!preg_match($pattern,$string)){
+            self::$errors[$field] = $message;
+        }
+    }
 
-        self::$errors = [];
+    public  static function validate(){
 
         $user_name = trim($_POST['user_name']);
         $email = trim($_POST['email']);
         $homepage = trim($_POST['homepage']);
         $text = trim($_POST['text']);
-        $tags = trim($_POST['tags']);
-        $captcha = trim($_POST['captcha']);
+        $captcha = strtolower(trim($_POST['captcha']));
+
+        self::checkField('/[A-z-А-я]/ui',$user_name,'Имя не должно состоять из цифр','user_name');
+        self::checkField("/^$|\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$homepage,'Несоответсвие url адресу','homepage');
+        self::checkField('/^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u',$email,'Не корректный E-mail','email');
+
+        if($captcha != $_SESSION['captcha']){
+            self::$errors['captcha'] = 'Код введен не верно';
+        }
 
         $required = [
             'user_name' => $user_name,
@@ -52,9 +62,10 @@ class Validator
 
         foreach ($required as $key => $value){
             if($value == ''){
-                self::$errors[$key] = 'Необходимо заполнить поле';
+                self::$errors[$key] = 'Поле должно быть заполнено';
             }
         }
+
         return self::$errors;
     }
 }
