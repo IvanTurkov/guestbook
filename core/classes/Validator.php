@@ -3,6 +3,8 @@
 
 class Validator
 {
+    protected static $errors;
+
     protected static function generateCaptchaChars(){
         $arrChars = array_merge(range('A','Z'),range('a','z'),range('0','9'));
         $captchaChars = '';
@@ -28,5 +30,31 @@ class Validator
         header('Content-type: image/png');
         imagepng($image);
         imagedestroy($image);
+    }
+
+    public  static function validate(){
+
+        self::$errors = [];
+
+        $user_name = trim($_POST['user_name']);
+        $email = trim($_POST['email']);
+        $homepage = trim($_POST['homepage']);
+        $text = trim($_POST['text']);
+        $tags = trim($_POST['tags']);
+        $captcha = trim($_POST['captcha']);
+
+        $required = [
+            'user_name' => $user_name,
+            'email' => $email,
+            'captcha' => $captcha,
+            'text' => $text,
+        ];
+
+        foreach ($required as $key => $value){
+            if($value == ''){
+                self::$errors[$key] = 'Необходимо заполнить поле';
+            }
+        }
+        return self::$errors;
     }
 }

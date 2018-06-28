@@ -28,6 +28,24 @@ function showMessage(message) {
         messBlock.hide();
     },2000);
 }
+
+function showErrors(errors) {
+    $.each(errors,function (index, value) {
+        var input = $('.site_input[name='+ index +']');
+        input.addClass('hasError');
+        input.siblings('.error_text').html(value);
+    })
+}
+
+function removeErrors() {
+    if($(this).hasClass('hasError')){
+        $(this).removeClass('hasError');
+        $(this).siblings('.error_text').html('');
+    }
+}
+
+$('.site_input').focus(removeErrors);
+
 function clearInputs() {
     $('.clearInput').val('');
 }
@@ -37,13 +55,18 @@ $('#reviewsForm').on('submit',function () {
    $.ajax({
         data: formData,
         method:'POST',
+        dataType:'json',
         url:'../core/sendAjax.php',
-       success: function (data) {
-            clearInputs();
-            showMessage(data);
-            reloadList();
+        success: function (data) {
+            if(data.errors !== undefined){
+                showErrors(data.errors);
+            }else{
+                clearInputs();
+                showMessage(data);
+                reloadList();
+            }
             reloadCaptcha();
-       }
+        }
    });
     return false;
 });

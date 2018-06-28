@@ -44,8 +44,18 @@ input:focus,textarea:focus{
     display: flex;
     justify-content: space-between;
 }
-.inputs_wrapper>input{
+.inputs_wrapper>.input_block{
     width: 31%;
+}
+.input_block{
+    position: relative;
+}
+.error_text{
+    position: absolute;
+    font:12px Montserrat-SemiBold;
+    color: #881c23;
+    top:-16px;
+    left: 0;
 }
 .site_input{
     color: #7e7e7e;
@@ -55,21 +65,17 @@ input:focus,textarea:focus{
     border: none;
     margin-bottom: 20px;
     height: 40px;
+    width: 100%;
     text-align: center;
     padding: 0 20px;
 }
 .site_ta{
-    width: 100%;
     text-align: left;
     padding-top: 20px;
     height: 150px;
 }
 .tags_input{
-    width: 100%;
     text-align: left;
-}
-.captcha_input{
-    width: 100%;
 }
 .site_submit{
     color: #fff;
@@ -141,5 +147,11 @@ input:focus,textarea:focus{
 }
 #end_message>td{
     font-family: Montserrat-SemiBold,sans-serif;
+    color: #fa1826;
+}
+.hasError{
+    background: #fab1b8;
+}
+.hasError::placeholder{
     color: #fa1826;
 }

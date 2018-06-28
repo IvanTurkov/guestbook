@@ -7,11 +7,9 @@ class Db
     protected $password = '';
     protected $db_name = 'guestbook';
 
-    protected $db;
-
     public function getDb(){
         $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8";
-        return $this->db = new PDO($dsn, $this->user, $this->password);
+        return new PDO($dsn, $this->user, $this->password);
     }
     protected function clearString($string){
         return trim(strip_tags($string));
@@ -24,7 +22,6 @@ class Db
         $homepage = $this->clearString($_POST['homepage']);
         $text = $this->clearString($_POST['text']);
         $tags = $this->clearString($_POST['tags']);
-        $captcha = strtolower($this->clearString($_POST['captcha']));
         $ip = $_SERVER['REMOTE_ADDR'];
         $browser = $_SERVER['HTTP_USER_AGENT'];
 
@@ -37,13 +34,11 @@ class Db
             ':review_tags' => $tags,
             ':review_text' => $text
         ];
-        session_start();
-        if($_SESSION['captcha'] == $captcha){
+
             $db->prepare("INSERT INTO 
                               reviews (user_name,user_email,user_homepage,user_ip,user_browser,review_tags,review_text)
                               VALUES(:user_name,:user_email,:user_homepage,:user_ip,:user_browser,:review_tags,:review_text)")
                 ->execute($params);
-        }
     }
     public function getComments($offset = null){
         $db = $this->getDb();
