@@ -1,9 +1,15 @@
 var offset = 4;
 var tableBody = $('.comments_block tbody');
+var search = {
+    user_name:'',
+    user_email:'',
+    review_tags:'',
+    date:''
+};
 
 function reloadList() {
     $.ajax({
-        url:'../core/inc/_comments.php',
+        url:'../core/loadAjax.php',
         success: function (data) {
             tableBody.html(data);
             offset = 4;
@@ -44,11 +50,35 @@ function removeErrors() {
     }
 }
 
-$('.site_input').focus(removeErrors);
-
 function clearInputs(inputClass) {
     $(inputClass).val('');
 }
+
+function checkEndPage(){
+    var wh = $(window).height();
+    var dh = $(document).height();
+    var sh = $(document).scrollTop();
+
+    return (dh - (wh + sh) === 0) ? true : false;
+}
+
+function searchMessage() {
+    var field = $(this).attr('id');
+    value = $(this).val();
+    search[field] = value;
+
+    $.ajax({
+        method:'GET',
+        data:{search:JSON.stringify(search)},
+        url:'../core/loadAjax.php',
+        success:function (data) {
+            tableBody.html(data);
+            offset = 4;
+        }
+    })
+}
+
+$('.site_input').focus(removeErrors);
 
 $('#reviewsForm').on('submit',function () {
    var formData = $(this).serialize();
@@ -72,26 +102,24 @@ $('#reviewsForm').on('submit',function () {
     return false;
 });
 
-function checkEndPage(){
-    var wh = $(window).height();
-    var dh = $(document).height();
-    var sh = $(document).scrollTop();
-
-    return (dh - (wh + sh) === 0) ? true : false;
-}
-
 $(window).on('scroll',function () {
     if(checkEndPage()) {
         $.ajax({
-            data: {offset:offset},
+            data: {
+                offset:offset,
+                search:JSON.stringify(search)
+            },
             method:'GET',
             url:'../core/loadAjax.php',
             dataType:'html',
             success: function (data) {
-                if(tableBody.children('#end_message').length === 0)
+                console.log(tableBody.children('#end_message').length);
+                if($('#end_message').length === 0)
                     tableBody.append(data);
                     offset += 4;
                 }
         });
    }
 });
+
+$('.search_input').on('input',searchMessage);

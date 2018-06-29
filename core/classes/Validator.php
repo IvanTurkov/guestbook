@@ -45,9 +45,9 @@ class Validator
         $text = trim($_POST['text']);
         $captcha = strtolower(trim($_POST['captcha']));
 
-        self::checkField('/[A-z-А-я]/ui',$user_name,'Имя не должно состоять из цифр','user_name');
+        self::checkField('/[A-z-А-я]/ui',$user_name,'Имя содержит неверные символы','user_name');
         self::checkField("/^$|\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$homepage,'Несоответсвие url адресу','homepage');
-        self::checkField('/^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u',$email,'Не корректный E-mail','email');
+        self::checkField('/^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u',$email,'Некорректный E-mail','email');
 
         if($captcha != $_SESSION['captcha']){
             self::$errors['captcha'] = 'Код введен не верно';

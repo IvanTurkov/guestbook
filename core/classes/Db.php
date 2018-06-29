@@ -43,10 +43,21 @@ class Db
     public function getComments($offset = null){
         $db = $this->getDb();
 
+        $searchQuery = '';
+        if(isset($_GET['search'])){
+            $search = $this->clearString($_GET['search']);
+            $search = json_decode($search,true);
+
+            $searchQuery = "WHERE user_name LIKE '%{$search['user_name']}%'
+                            AND user_email LIKE '%{$search['user_email']}%'
+                            AND date LIKE '%{$search['date']}%'
+                            AND review_tags LIKE '%{$search['review_tags']}%'";
+        }
+
         $offset = $offset != null ? $offset.',' : '';
         $offset = $this->clearString($offset);
 
-        $query = "SELECT * FROM reviews ORDER BY date DESC LIMIT $offset 4";
+        $query = "SELECT * FROM reviews $searchQuery ORDER BY date DESC LIMIT $offset 4";
         $comments = $db->query($query)->fetchAll();
         return $comments;
     }
